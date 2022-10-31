@@ -15,7 +15,7 @@ $(document).ready(function () {
     let hourThree = JSON.parse(localStorage.getItem('hour3')) || '';
     let hourFour = JSON.parse(localStorage.getItem('hour4')) || '';
     let hourFive = JSON.parse(localStorage.getItem('hour5')) || '';
-    
+
     // Fill in the respective <textarea> tags with the description
     $('.text-area-9').text(hourNine.desc ? hourNine.desc : '')
     $('.text-area-10').text(hourTen.desc ? hourTen.desc : '')
@@ -26,6 +26,34 @@ $(document).ready(function () {
     $('.text-area-3').text(hourThree.desc ? hourThree.desc : '')
     $('.text-area-4').text(hourFour.desc ? hourFour.desc : '')
     $('.text-area-5').text(hourFive.desc ? hourFive.desc : '')
+
+
+    const currentHour = moment().hour();
+    // loop thru the time slots and grab their hour by the id and compare it to the current hour to determine color.
+    $(".time-block").each(function (obj, i) {
+        let timeBlockTime = parseInt(i.id.split('hour')[1]);
+
+        console.log(i.id.split('hour')[1])
+        switch (true) {
+            case timeBlockTime === currentHour:
+                $(this).removeClass('past')
+                $(this).removeClass('future')
+                $(this).addClass('current')
+                break
+            case timeBlockTime < currentHour:
+                $(this).removeClass('current')
+                $(this).removeClass('future')
+                $(this).addClass('past')
+                break
+            case timeBlockTime > currentHour:
+                $(this).removeClass('present')
+                $(this).removeClass('past')
+                $(this).addClass('future')
+                break
+        }
+    })
+
+
 
     // adding an event listener for all the save buttons to capture their respective text area .siblings() did not work.
     $(".saveBtn-9").on('click', () => {
